@@ -1,0 +1,82 @@
+C51 COMPILER V9.60.7.0   MAIN                                                              03/20/2023 15:10:22 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Users\ARYA AGARWAL\Desktop\KEIL SOFTWARE\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG O
+                    -BJECTEXTEND PRINT(.\Listings\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          /**********************************************************
+   2          EE337: ADC IC MCP3008 interfacing with pt-51
+   3          (1) Complete spi_init() function from spi.h 
+   4          
+   5          ***********************************************************/
+   6          
+   7          #include <at89c5131.h>
+   8          #include "lcd.h"                                        //Driver for interfacing lcd 
+   9          #include "mcp3008.h"                                    //Driver for interfacing ADC ic MCP3008
+  10          
+  11          
+  12          char adc_ip_data_ascii[6]={0,0,0,0,0,'\0'};             //string array for saving ascii of input sample
+  13          code unsigned char display_msg1[]="Volt.: ";            //Display msg on 1st line of lcd
+  14          code unsigned char display_msg2[]=" mV";                //Display msg on 2nd line of lcd
+  15          
+  16          
+  17          
+  18          
+  19          
+  20          void main(void)
+  21          {
+  22   1        int j=0;
+  23   1        unsigned int adc_data=0;
+  24   1        
+  25   1        spi_init();                                         
+  26   1        adc_init();
+  27   1          lcd_init();
+  28   1        
+  29   1        
+  30   1        
+  31   1        while(1)
+  32   1        {
+  33   2          unsigned int x;
+  34   2          
+  35   2           
+  36   2          x = adc(4);                                         //Read analog value from 0th channel of ADC Ic MCP3008
+  37   2          adc_data = (unsigned int) (x*3.2258);               //Converting received 10 bits value to milli volt (3.3*1000
+             -*i/p /1023)
+  38   2      
+  39   2          /*
+  40   2              Display "Volt: " on first line of lcd
+  41   2              Print analog sampled input on lcd using int_to_string function and 
+  42   2              Display "XXXXX mV" on second line of LCD
+  43   2          
+  44   2          */
+  45   2      lcd_cmd(0x80);                          //Move cursor to first line
+  46   2          lcd_write_string(display_msg1);   
+  47   2          int_to_string(adc_data,adc_ip_data_ascii); 
+  48   2          lcd_cmd(0xC0); // Move the cursor to the second row
+  49   2          lcd_write_string(adc_ip_data_ascii); // Display the character on the LCD
+  50   2          lcd_cmd(0xC6);
+  51   2          lcd_write_string(display_msg2);
+  52   2          
+  53   2        }
+C51 COMPILER V9.60.7.0   MAIN                                                              03/20/2023 15:10:22 PAGE 2   
+
+  54   1      }
+  55          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    676    ----
+   CONSTANT SIZE    =     12    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      7      30
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

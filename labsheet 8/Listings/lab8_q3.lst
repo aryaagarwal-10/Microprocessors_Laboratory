@@ -1,0 +1,190 @@
+C51 COMPILER V9.60.7.0   LAB8_Q3                                                           03/13/2023 15:07:58 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE LAB8_Q3
+OBJECT MODULE PLACED IN .\Objects\lab8_q3.obj
+COMPILER INVOKED BY: C:\Users\ARYA AGARWAL\Desktop\KEIL SOFTWARE\C51\BIN\C51.EXE lab8_q3.c OPTIMIZE(8,SPEED) BROWSE DEBU
+                    -G OBJECTEXTEND PRINT(.\Listings\lab8_q3.lst) TABS(2) OBJECT(.\Objects\lab8_q3.obj)
+
+line level    source
+
+   1          #include <at89c5131.h>
+   2          /*************************************************
+   3            lcd.h: Header file for 16x2 LCD interfacing  
+   4          **************************************************/
+   5          
+   6          //Functions contained in this header file
+   7          void msdelay(unsigned int);                                 //fn takes integer value as an input and generates correspondi
+             -ng delay in milli seconds
+   8          void lcd_init(void);                                        //Initialize LCD
+   9          void lcd_cmd(unsigned int i);                               //Sends commands to lcd
+  10          void lcd_char(unsigned char ch);                            //display character on a lcd corresponding to input ascii
+  11          void lcd_write_string(unsigned char *s);                    //takes pointer of a string which ends with null and dis
+             -play on a lcd 
+  12          
+  13          
+  14          //Signals to LCD
+  15          sbit RS=P0^0; //Register select
+  16          sbit RW=P0^1; //Read from or write to register
+  17          sbit EN=P0^2; //Enable pin of lcd
+  18          
+  19          
+  20          //Function definitions
+  21          /************************************************
+  22             lcd_init():
+  23            Initializes LCD port and 
+  24            LCD display parameters
+  25          ************************************************/
+  26          void lcd_init(void)
+  27          {
+  28   1        P2=0x00;
+  29   1        EN=0;
+  30   1        RS=0;
+  31   1        RW=0;
+  32   1        
+  33   1        lcd_cmd(0x38);  // Function set: 2 Line, 8-bit, 5x7 dots
+  34   1        msdelay(4);
+  35   1        lcd_cmd(0x06);  // Entry mode, auto increment with no shift
+  36   1        msdelay(4);
+  37   1        lcd_cmd(0x0C);  // Display on, Curson off
+  38   1        msdelay(4);
+  39   1        lcd_cmd(0x01);  // LCD clear
+  40   1        msdelay(4);
+  41   1        lcd_cmd(0x80);  //Move cursor to Row 1 column 0
+  42   1      }
+  43          
+  44          /**********************************************************
+  45             msdelay(<time_val>): 
+  46            Delay function for delay value <time_val>ms
+  47          ***********************************************************/  
+  48          void msdelay(unsigned int time)
+  49          {
+  50   1        int i,j;
+  51   1        for(i=0;i<time;i++)
+  52   1        {
+C51 COMPILER V9.60.7.0   LAB8_Q3                                                           03/13/2023 15:07:58 PAGE 2   
+
+  53   2          for(j=0;j<382;j++);
+  54   2        }
+  55   1      }
+  56          
+  57          /**********************************************************
+  58              lcd_cmd(<char command>):
+  59            Sends 8 bit command
+  60            LCD display parameters
+  61          ***********************************************************/  
+  62          void lcd_cmd(unsigned int i)
+  63          {
+  64   1        RS=0;
+  65   1        RW=0;
+  66   1        EN=1;
+  67   1        P2=i;
+  68   1        msdelay(10);
+  69   1        EN=0;
+  70   1      }
+  71          
+  72          
+  73          /**********************************************************
+  74             lcd_write_char(<char data>):
+  75            Sends 8 bit character(ASCII)
+  76            to be printed on LCD
+  77          ***********************************************************/  
+  78          void lcd_write_char(unsigned char ch)
+  79          {
+  80   1        RS=1;
+  81   1        RW=0;
+  82   1        EN=1;
+  83   1        P2=ch;
+  84   1        msdelay(10);
+  85   1        EN=0;
+  86   1      }
+  87          
+  88          
+  89          /***********************************************************
+  90            lcd_write_string(<string pointer>):
+  91            Prints string on LCD. Requires string pointer 
+  92            as input argument.
+  93          ***********************************************************/  
+  94          void lcd_write_string(unsigned char *s)
+  95          {
+  96   1        while(*s!='\0')
+  97   1        {
+  98   2          lcd_write_char(*s++);
+  99   2        }
+ 100   1      }
+ 101           
+ 102          sbit input_pin = P3^4;
+ 103          
+ 104          
+ 105          unsigned int count, sec, min,sec0,min0,sec1,min1; 
+ 106          
+ 107          void timer0_isr () interrupt 1
+ 108          {
+ 109   1      
+ 110   1        TH0 = 0xFF; 
+ 111   1        TL0 = 0xC4;
+ 112   1      
+ 113   1         count = count + 1;
+ 114   1        sec= (count % 60);
+C51 COMPILER V9.60.7.0   LAB8_Q3                                                           03/13/2023 15:07:58 PAGE 3   
+
+ 115   1        sec0 = sec % 10;
+ 116   1      sec1 = sec / 10;  
+ 117   1            min = count / 60; 
+ 118   1           min0 = min %10;
+ 119   1        min1 = min/10;
+ 120   1            lcd_cmd(0x80); 
+ 121   1            lcd_cmd(0x01);
+ 122   1            lcd_write_char(min1+48); // display tens digit of minute
+ 123   1            lcd_cmd(0x06);
+ 124   1            lcd_write_char(min0+48); // display ones digit of minute
+ 125   1        lcd_cmd(0x06);
+ 126   1            lcd_write_char(':'); // display colon
+ 127   1        lcd_cmd(0x06);
+ 128   1            lcd_write_char(sec1+48); // display tens digit of second
+ 129   1        lcd_cmd(0x06);
+ 130   1            lcd_write_char(sec0+48); // display ones digit of second
+ 131   1        lcd_cmd(0x06);
+ 132   1        
+ 133   1      }
+ 134          
+ 135          
+ 136          void main()
+ 137          {
+ 138   1        lcd_init();
+ 139   1        msdelay(4);
+ 140   1        ACC = &count;
+*** WARNING C260 IN LINE 140 OF lab8_q3.c: '=': pointer truncation
+ 141   1        P1 = 0x0F;
+ 142   1        input_pin = 1;
+ 143   1        TMOD = 0x05; 
+ 144   1        TH0 = 0xFF; 
+ 145   1        TL0 = 0xC4;
+ 146   1        ET0 = 1; //activate interrupts for both timers
+ 147   1        EA = 1;  //activate global interrupts
+ 148   1         while(1){
+ 149   2          if(P1^0 == 1) 
+ 150   2          {
+ 151   3              TR0 = 1; //start timer 0
+ 152   3          }
+ 153   2       else {
+ 154   3         TR0 = 0;
+ 155   3       }
+ 156   2      }
+ 157   1          
+ 158   1      }
+ 159          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    390    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     14       3
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)

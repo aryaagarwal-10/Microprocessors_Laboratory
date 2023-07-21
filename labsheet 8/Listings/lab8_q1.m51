@@ -1,0 +1,127 @@
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    03/10/2023  16:39:08  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.4.0, INVOKED BY:
+C:\USERS\ARYA AGARWAL\DESKTOP\KEIL SOFTWARE\C51\BIN\BL51.EXE .\Objects\lab8_q1.obj TO .\Objects\lab8_q1 PRINT (.\Listing
+>> s\lab8_q1.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\lab8_q1.obj (LAB8_Q1)
+  C:\USERS\ARYA AGARWAL\DESKTOP\KEIL SOFTWARE\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\Objects\lab8_q1 (LAB8_Q1)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            IDATA   0008H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     07FDH                  *** GAP ***
+            CODE    0800H     0010H     UNIT         ?PR?TIMERDELAY_ON?LAB8_Q1
+            CODE    0810H     0010H     UNIT         ?PR?TIMERDELAY_OFF?LAB8_Q1
+            CODE    0820H     000FH     UNIT         ?PR?MAIN?LAB8_Q1
+            CODE    082FH     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\lab8_q1 (LAB8_Q1)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?LAB8_Q1
+
+?PR?MAIN?LAB8_Q1
+  +--> ?PR?TIMERDELAY_ON?LAB8_Q1
+  +--> ?PR?TIMERDELAY_OFF?LAB8_Q1
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\lab8_q1 (LAB8_Q1)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        LAB8_Q1
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  03/10/2023  16:39:08  PAGE 2
+
+
+  D:00B0H         PUBLIC        P3
+  D:00C0H         PUBLIC        P4
+  D:00A8H         PUBLIC        IEN0
+  D:00B8H         PUBLIC        IPL0
+  D:00D8H         PUBLIC        CCON
+  C:0820H         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+  C:0800H         PUBLIC        timerdelay_ON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  B:0088H.7       PUBLIC        TF1
+  D:008DH         PUBLIC        TH1
+  D:008BH         PUBLIC        TL1
+  B:00B0H.6       PUBLIC        LED
+  D:00F8H         PUBLIC        UEPINT
+  B:0088H.6       PUBLIC        TR1
+  D:00C8H         PUBLIC        T2CON
+  C:0810H         PUBLIC        timerdelay_OFF
+  -------         PROC          MAIN
+  C:0820H         LINE#         26
+  C:0820H         LINE#         27
+  C:0820H         LINE#         28
+  C:0823H         LINE#         29
+  C:0823H         LINE#         30
+  C:0823H         LINE#         31
+  C:0825H         LINE#         32
+  C:0828H         LINE#         33
+  C:082AH         LINE#         34
+  C:082DH         LINE#         35
+  -------         ENDPROC       MAIN
+  -------         PROC          TIMERDELAY_ON
+  C:0800H         LINE#         40
+  C:0800H         LINE#         41
+  C:0800H         LINE#         42
+  C:0803H         LINE#         43
+  C:0806H         LINE#         44
+  C:0808H         LINE#         45
+  C:080BH         LINE#         46
+  C:080DH         LINE#         47
+  C:080FH         LINE#         48
+  -------         ENDPROC       TIMERDELAY_ON
+  -------         PROC          TIMERDELAY_OFF
+  C:0810H         LINE#         50
+  C:0810H         LINE#         51
+  C:0810H         LINE#         52
+  C:0813H         LINE#         53
+  C:0816H         LINE#         54
+  C:0818H         LINE#         55
+  C:081BH         LINE#         56
+  C:081DH         LINE#         57
+  C:081FH         LINE#         58
+  -------         ENDPROC       TIMERDELAY_OFF
+  -------         ENDMOD        LAB8_Q1
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 002FH BYTE ( 2%) *
+******************************************************************************
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  03/10/2023  16:39:08  PAGE 3
+
+
+
+Program Size: data=9.0 xdata=0 code=62
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
